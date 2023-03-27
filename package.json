@@ -3,7 +3,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "node server.js"
+    "start": "nodemon server.js"
   },
   "keywords": [],
   "author": "",
@@ -25,7 +25,7 @@
     "handlebars-helpers": "^0.10.0",
     "mongoose": "^5.13.5",
     "nodemailer": "^6.6.3",
-    "nodemon": "^2.0.12",
+    "nodemon": "^2.0.22",
     "passport": "^0.4.1",
     "passport-local": "^1.0.0",
     "session-file-store": "^1.5.0",

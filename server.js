@@ -1,22 +1,16 @@
 const express = require("express")
 require("dotenv").config();
-const AdminBro = require("admin-bro")
-const AdminBroMongoose = require("admin-bro-mongoose");
-const {buildAuthenticatedRouter} = require("admin-bro-expressjs");
 const handlebars = require("express-handlebars")
 const helpers = require("handlebars-helpers")
 const app = express()
 const Mongoose = require("mongoose")
 const session = require("express-session")
 const FileStore = require("session-file-store")(session)
-const path = require('path')
 var cors = require('cors')
-const UserAdmin=require("./user.js");
-const error = require("./models/errorsModel.js");
-const performance= require("./models/performanceModel.js");
-const projectModel= require("./models/projectModel.js");
 
+console.log(process.env.url)
 const MongoDB_URI=process.env.url;
+Mongoose.set("strictQuery", true);
 Mongoose.connect(
   MongoDB_URI ,
   {
@@ -33,9 +27,8 @@ app.engine(
     helpers: helpers(),
   })
 )
-app.set("views", `${__dirname}/views`)
 app.set("view engine", "handlebars")
-app.use(express.static(`${__dirname}/public/`))
+app.use(express.static(__dirname + "/views/public"));
 app.use(require("cookie-parser")())
 app.use(
   session({
@@ -50,23 +43,8 @@ app.use(
     saveUninitialized: true,
   })
 )
-AdminBro.registerAdapter(AdminBroMongoose);
-const adminBro=new AdminBro({
-  resources:[error,performance,UserAdmin,projectModel]
-});
-const route=buildAuthenticatedRouter(adminBro,{
-   cookieName:"p-Err",
-   cookieSecret:"u8U:jF>Klleyn1G",
-   authenticate:async(email,password)=>{
-     if(email==process.env.email&&password==process.env.password){
-       return {
-         email,password
-       }
-     }
-     return null;
-   }
-});
-app.use(adminBro.options.rootPath,route);
+
+
 app.use(express.json())
 app.use(express.json())
 app.use(express.urlencoded({extended: true}))

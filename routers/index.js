@@ -10,7 +10,7 @@ module.exports = (database) => {
   router.get("/", async (req, res) => {
     if (!req.session.user) {
 
-     res.render("index",{
+    return  res.render("index",{
        checkTrue}
        );
     }
